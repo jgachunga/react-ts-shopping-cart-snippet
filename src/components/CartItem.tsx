@@ -1,7 +1,7 @@
 import { Button, Stack } from "react-bootstrap";
-import { useShoppingCart } from "../context/shoppingCartContext"
-import storeItems from "../data/items.json";
 import { formatCurrency } from "../utilities/formatCurrency";
+import { useAppDispatch, useAppSelector } from "../hooks/reactHooks";
+import { removeFromCart } from "../features/StoreHome/storeSlice";
 
 type CartItemProps = {
     id: number
@@ -9,7 +9,8 @@ type CartItemProps = {
 }
 
 export function CartItem( {id, quantity} : CartItemProps) {
-    const { removeFromCart} = useShoppingCart()
+    const dispatch = useAppDispatch()
+    const storeItems = useAppSelector((state) => state.cartStore.storeItems)
     const item = storeItems.find(item => item.id === id)
     if (item == null) return null
     return (
@@ -25,7 +26,7 @@ export function CartItem( {id, quantity} : CartItemProps) {
             </div>
         </div>
         <div>{formatCurrency(item.price * quantity)}</div>
-        <Button variant="outline-danger" size="sm" onClick={() => removeFromCart(item.id)}>&times;</Button>
+        <Button variant="outline-danger" size="sm" onClick={() => dispatch(removeFromCart(item.id))}>&times;</Button>
         </Stack>
     )
 }

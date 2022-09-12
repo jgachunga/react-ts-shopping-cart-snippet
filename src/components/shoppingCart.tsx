@@ -1,12 +1,16 @@
 import { Offcanvas, Stack } from "react-bootstrap";
-import { useShoppingCart } from "../context/shoppingCartContext";
+import { toggleOpenCart } from "../features/StoreHome/storeSlice";
+
+import { useAppDispatch, useAppSelector } from "../hooks/reactHooks";
 import { formatCurrency } from "../utilities/formatCurrency";
 import { CartItem } from "./CartItem";
-import storeItems from '../data/items.json'
+
 
 export function ShoppingCart() {
-    const { closeCart, isOpen, cartItems } = useShoppingCart()
-    return <Offcanvas show={isOpen} placement='end' onHide={closeCart}>
+    const { storeItems, isOpen, cartItems } = useAppSelector((state) => state.cartStore)
+    const dispatch = useAppDispatch()
+    
+    return <Offcanvas show={isOpen} placement='end' onHide={() => dispatch(toggleOpenCart())}>
         <Offcanvas.Header closeButton>
             <Offcanvas.Title>Cart</Offcanvas.Title>
         </Offcanvas.Header>

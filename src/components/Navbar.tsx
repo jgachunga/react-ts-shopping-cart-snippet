@@ -1,10 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {Button, Container, Nav, Navbar as NavBarBs} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { useShoppingCart } from '../context/shoppingCartContext';
+import { getcartQuantity, toggleOpenCart } from '../features/StoreHome/storeSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/reactHooks';
 
 export function Navbar() {
-    const {cartQuantity, openCart} = useShoppingCart()
+    const cartQuantity = useAppSelector((state) => getcartQuantity(state))
+    const dispatch = useAppDispatch()
 
     return (
     <NavBarBs sticky="top" className='bg-white shadow-1 mb-3'>
@@ -20,7 +21,7 @@ export function Navbar() {
                     About
                 </Nav.Link>
             </Nav>
-            <Button style={{width: "3rem", height:"3rem", position: 'relative'}} variant="outline-primary" className="rounded-circle" onClick={() => openCart()}>
+            <Button style={{width: "3rem", height:"3rem", position: 'relative'}} variant="outline-warning" className="rounded-circle" onClick={() => dispatch(toggleOpenCart())}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 576 512"
